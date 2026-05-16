@@ -7,38 +7,51 @@ print ("Список комманд: добавить, список, автор,
 
 if os.path.exists("books.json"):
     with open ("books.json", 'r', encoding='utf-8') as f:
-        books = json.load(f)
+        books = json.load(f) # чтение данных если список словарей books.json существует
 else:
-    books = []
-while True:
-    commande=input ("Введите команду:")
-    if commande.lower() == "выход":
+    books = [] # либо создание пустого списока для словарей
+
+while True: # бесконечный цикл
+    com=input ("Введите команду:")
+    
+    # выход из цикла 
+    if com.lower() == "выход":
         with open ("books.json", 'w', encoding='utf-8') as f:
             json.dump(books, f, ensure_ascii=False, indent=4)  
-            break
-    elif commande.lower() == "добавить":
+            break 
+     
+    # добавление полученных данных в список словарей books[{"полученные данные"}]   
+    elif com.lower() == "добавить":
          title = input ("Введите название книги?: ")
          year = input ("В каком году написана книга?: ")
          author  = input ("Кто автор?: ")
-         books.append({"title":title, "year":year, "author":author, "read":False})
-    elif commande.lower() == "список":
+         books.append({"title":title, "year":year, "author":author, "read":False}) 
+        
+    # список сохраненых книг ([v] - отметка о прочтении)      
+    elif com.lower() == "список":
         for index, book in enumerate(books, start=1):
             if not book["read"]:
                 print (f"{index}. [ ] {book['title']} {book['author']} {book['year']}")
             else:
                 print (f"{index}. [V] {book['title']} {book['author']} {book['year']}")
-    elif  commande.lower() == "автор":
+    
+    # поиск книг по автору
+    elif  com.lower() == "автор":
         author = input ("Введите автора: ")
         for index, book in enumerate(books, start=1):
             if book["author"] == author:
                 print (f"{index}. [ ] {book['title']} {book['author']} {book['year']}")
-    elif commande.lower() == "прочитано":
+    
+    # отметка о прочтении
+    elif com.lower() == "прочитано":
         title = input ("Введите название книги: ")
         for book in books:
             if book['title']==title:
                 if not book['read']:
                     book['read']=True
-    elif commande.lower()=="статистика":
+                    
+    # получение статистики
+    elif com.lower()=="статистика":
         no_read =0
         yes_read =0
         for book in books:
